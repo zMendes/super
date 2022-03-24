@@ -3614,6 +3614,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd1c3a067f8d8104495096f65f851858, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  botao:
+    actionPath: /actions/default/in/InteractUI
+    needsReinit: 0
+  VRCamera: {fileID: 1443036274}
 --- !u!1001 &1460668801
 PrefabInstance:
   m_ObjectHideFlags: 0

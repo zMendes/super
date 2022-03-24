@@ -9,27 +9,38 @@ using UnityEngine.EventSystems;
 
 using Valve.VR.Extras;
 
+using Valve.VR;
+
 
 public class Laser : MonoBehaviour
 
 {
 
-     private SteamVR_LaserPointer steamVrLaserPointer;
+    private SteamVR_LaserPointer steamVrLaserPointer;
+    [SerializeField] private SteamVR_Action_Boolean botao = SteamVR_Input.GetAction<SteamVR_Action_Boolean>("InteractUI");
+    SteamVR_Behaviour_Pose trackedObj;
 
-    private bool clicked = false;
+
+    // private bool clicked = false;
     private bool pressing = false;
+    public GameObject VRCamera;
+    Vector3 move;
+    Vector3 posInit;
 
-     private void Awake()
+    Transform targetObject;
+     private void Start()
 
      {
+        trackedObj = GetComponent<SteamVR_Behaviour_Pose>();
 
-         steamVrLaserPointer = gameObject.GetComponent<SteamVR_LaserPointer>();
 
-         steamVrLaserPointer.PointerIn += OnPointerIn;
+        steamVrLaserPointer = gameObject.GetComponent<SteamVR_LaserPointer>();
 
-         steamVrLaserPointer.PointerOut += OnPointerOut;
+        steamVrLaserPointer.PointerIn += OnPointerIn;
 
-         steamVrLaserPointer.PointerClick += OnPointerClick;
+        steamVrLaserPointer.PointerOut += OnPointerOut;
+
+        steamVrLaserPointer.PointerClick += OnPointerClick;
 
      }
 
@@ -38,9 +49,9 @@ public class Laser : MonoBehaviour
      private void OnPointerClick(object sender, PointerEventArgs e)
 
      {
-
-         clicked = true;
-         scaleObj(e.target.transform);
+        targetObject = e.target.transform;
+        print("got it");
+         //scaleObj(e.target.transform);
          //StartCoroutine(MoveFromTo(e.target.transform, e.target.transform.position, transform.position, 8.0f));
 
 
@@ -49,12 +60,7 @@ public class Laser : MonoBehaviour
 
  
 
-     private void OnPointerOut(object sender, PointerEventArgs e)
-
-     { 
-         pressing = false;
-
-        // Debug.Log("laser saiu do objeto " + e.target.name);
+     private void OnPointerOut(object sender, PointerEventArgs e){
 
         return;
      }
@@ -64,8 +70,6 @@ public class Laser : MonoBehaviour
      private void OnPointerIn(object sender, PointerEventArgs e)
 
      {
-
-        //  Debug.Log("laser entrou do objeto " + e.target.name);
         return;
 
      }
@@ -102,15 +106,21 @@ public class Laser : MonoBehaviour
 
     void Update(){
 
-        if (clicked){
+        if (botao.GetStateDown(trackedObj.inputSource)){
             pressing = true;
-            clicked = false;
-            posInit = transform.position.x;
+            posInit = transform.position;
 
         }
-        if (pressing){
-            
+        if (botao.GetStateUp(trackedObj.inputSource)){
+            pressing = false;
         }
+
+        if (pressing){
+            move = VRCamera.transform.rotation * new Vector3(transform.position.x-posInit.x, transform.position.z-posInit.z, transform.position.y-posInit.y);
+            print(move);
+            //targetObject.transform.localScale = move.x *
+        }
+
     }
  }
 

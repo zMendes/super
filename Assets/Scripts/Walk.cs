@@ -25,7 +25,7 @@ public class Walk : MonoBehaviour
 
     public float playerSpeed = 2.0f;
 
-    private float gravityValue = -9.81f;
+    // private float gravityValue = -9.81f;
 
 
     public SteamVR_Action_Boolean teleportAction = SteamVR_Input.GetAction<SteamVR_Action_Boolean>("Teleport");
