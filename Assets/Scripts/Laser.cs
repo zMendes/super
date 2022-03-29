@@ -23,11 +23,12 @@ public class Laser : MonoBehaviour
 
     // private bool clicked = false;
     private bool pressing = false;
-    public GameObject VRCamera;
+    public Camera VRCamera;
     Vector3 move;
     Vector3 posInit;
-
-    Transform targetObject;
+    public int maxDistance = 10;
+Vector3 initialScale;
+    Transform target;
      private void Start()
 
      {
@@ -49,10 +50,11 @@ public class Laser : MonoBehaviour
      private void OnPointerClick(object sender, PointerEventArgs e)
 
      {
-        targetObject = e.target.transform;
+       // targetObject = e.target.transform;
         print("got it");
          //scaleObj(e.target.transform);
          //StartCoroutine(MoveFromTo(e.target.transform, e.target.transform.position, transform.position, 8.0f));
+        
 
 
 
@@ -107,8 +109,15 @@ public class Laser : MonoBehaviour
     void Update(){
 
         if (botao.GetStateDown(trackedObj.inputSource)){
-            pressing = true;
-            posInit = transform.position;
+            
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, transform.forward, out hit, maxDistance)){
+                print("Found an object: " + hit.collider.name);
+                posInit = transform.position;
+                target = hit.collider.gameObject.transform;
+                initialScale = target.localScale;
+                pressing = true;
+            }
 
         }
         if (botao.GetStateUp(trackedObj.inputSource)){
@@ -116,9 +125,27 @@ public class Laser : MonoBehaviour
         }
 
         if (pressing){
-            move = VRCamera.transform.rotation * new Vector3(transform.position.x-posInit.x, transform.position.z-posInit.z, transform.position.y-posInit.y);
-            print(move);
-            //targetObject.transform.localScale = move.x *
+            Vector3 screenInit = VRCamera.WorldToScreenPoint(new Vector3(posInit.x, posInit.y, posInit.z));
+            Vector3 screenNow = VRCamera.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y, transform.position.z));
+
+            move = (screenNow - screenInit);//.normalize;
+            float movement = move.x;
+            Debug.Log("movement: " +movement);
+            Debug.Log("initialScale: " +initialScale);
+            Debug.Log("localScale: " + target.localScale);
+            float ratio = 1;
+            if (movement > 0)
+                ratio = Mathf.Max(Mathf.Min(2, movement),1);
+            else if (movement < 0)
+                ratio = 1/Mathf.Min(Mathf.Min(2, -movement),1);
+            Debug.Log("Ratio: " + ratio);
+            if (ratio > 5)
+                ratio = 5;
+            if (ratio < 0.1)
+                ratio = 0.1f;
+            //target.localScale = ratio * initialScale;
+            
+
         }
 
     }
