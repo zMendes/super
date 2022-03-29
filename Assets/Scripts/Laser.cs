@@ -135,9 +135,9 @@ Vector3 initialScale;
             Debug.Log("localScale: " + target.localScale);
             float ratio = 1;
             if (movement > 0)
-                ratio = Mathf.Max(1,5 *movement);
+                ratio = Mathf.Max(1,7 *movement);
             else if (movement < 0)
-                ratio = -movement;
+                ratio = 1/Mathf.Max(1,7*(-movement));
             Debug.Log("Ratio: " + ratio);
             if (ratio > 5)
                 ratio = 5;
