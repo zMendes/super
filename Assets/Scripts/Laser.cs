@@ -125,8 +125,8 @@ Vector3 initialScale;
         }
 
         if (pressing){
-            Vector3 screenInit = VRCamera.WorldToScreenPoint(new Vector3(posInit.x, posInit.y, posInit.z));
-            Vector3 screenNow = VRCamera.WorldToScreenPoint(new Vector3(transform.position.x, transform.position.y, transform.position.z));
+            Vector3 screenInit = VRCamera.WorldToViewportPoint(new Vector3(posInit.x, posInit.y, posInit.z));
+            Vector3 screenNow = VRCamera.WorldToViewportPoint(new Vector3(transform.position.x, transform.position.y, transform.position.z));
 
             move = (screenNow - screenInit);//.normalize;
             float movement = move.x;
@@ -135,15 +135,15 @@ Vector3 initialScale;
             Debug.Log("localScale: " + target.localScale);
             float ratio = 1;
             if (movement > 0)
-                ratio = Mathf.Max(Mathf.Min(2, movement),1);
+                ratio = Mathf.Max(1,5 *movement);
             else if (movement < 0)
-                ratio = 1/Mathf.Min(Mathf.Min(2, -movement),1);
+                ratio = -movement;
             Debug.Log("Ratio: " + ratio);
             if (ratio > 5)
                 ratio = 5;
             if (ratio < 0.1)
                 ratio = 0.1f;
-            //target.localScale = ratio * initialScale;
+            target.localScale = ratio * initialScale;
             
 
         }
