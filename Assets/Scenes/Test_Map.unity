@@ -4064,6 +4064,10 @@ MonoBehaviour:
     needsReinit: 0
   VRCamera: {fileID: 1443036277}
   maxDistance: 10
+  initTransform: {x: 0, y: 0, z: 0}
+  initTransformObj: {x: 0, y: 0, z: 0}
+  movieRatio: 5
+  state: 0
 --- !u!1001 &1460668801
 PrefabInstance:
   m_ObjectHideFlags: 0

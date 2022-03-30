@@ -20,15 +20,27 @@ public class Laser : MonoBehaviour
     [SerializeField] private SteamVR_Action_Boolean botao = SteamVR_Input.GetAction<SteamVR_Action_Boolean>("InteractUI");
     SteamVR_Behaviour_Pose trackedObj;
 
-
     // private bool clicked = false;
     private bool pressing = false;
     public Camera VRCamera;
     Vector3 move;
     Vector3 posInit;
     public int maxDistance = 10;
-Vector3 initialScale;
+    Vector3 initialScale;
     Transform target;
+    
+    public Vector3 initTransform;
+    public Vector3 initTransformObj;
+
+    public int movieRatio;
+
+    public enum States {
+        Space,
+        Time,
+        Move
+    }
+
+    public States state = States.Move;
      private void Start()
 
      {
@@ -117,6 +129,10 @@ Vector3 initialScale;
                 target = hit.collider.gameObject.transform;
                 initialScale = target.localScale;
                 pressing = true;
+                initTransform = transform.position;
+                initTransformObj = hit.collider.gameObject.transform.position;
+                state = States.Move;
+
             }
 
         }
@@ -139,12 +155,21 @@ Vector3 initialScale;
             else if (movement < 0)
                 ratio = 1/Mathf.Max(1,7*(-movement));
             Debug.Log("Ratio: " + ratio);
+            Debug.Log(state);
             if (ratio > 5)
                 ratio = 5;
             if (ratio < 0.1)
                 ratio = 0.1f;
-            target.localScale = ratio * initialScale;
+            if (state == States.Space)
+                target.localScale = ratio * initialScale;
+            if (state == States.Time)
+                ratio = 2;
+           if (state == States.Move){
+            Vector3 delta = initTransform - transform.position;
+            target.position = initTransformObj - (delta * movieRatio);
+           }
             
+                
 
         }
 
