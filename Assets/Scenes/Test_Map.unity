@@ -1780,6 +1780,7 @@ GameObject:
   - component: {fileID: 566243390}
   - component: {fileID: 566243389}
   - component: {fileID: 566243388}
+  - component: {fileID: 566243395}
   m_Layer: 0
   m_Name: Sphere (1)
   m_TagString: Untagged
@@ -1978,13 +1979,27 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 566243387}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.751, y: 1.337, z: -7.67}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: -7.39, y: 1.337, z: -7.67}
   m_LocalScale: {x: 0.39672002, y: 0.37806, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &566243395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 566243387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d63ad5e1f97e941459da75011b64cc0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  angularSpeed: 1
+  circleRad: 1
 --- !u!4 &577447785 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 416390, guid: c76d2d3504ddb4847940a815cad04644, type: 3}
