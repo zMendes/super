@@ -19,7 +19,7 @@ void Start ()
 void Update ()
 {
   currentAngle += angularSpeed * Time.deltaTime;
-  Vector2 offset = new Vector2 (Mathf.Cos (currentAngle), Mathf.Sin (currentAngle)) * circleRad;
+  Vector2 offset = new Vector2 (Mathf.Sin (currentAngle), Mathf.Sin (currentAngle)) * circleRad;
   transform.position = fixedPoint + offset;
 }
 }

@@ -191,3 +191,27 @@ public class Laser : MonoBehaviour
     }
  }
 
+
+
+
+
+
+
+
+
+
+
+ 
+/* 
+TODO
+
+Canva inicial com mensgem 
+BEM VINDO
+Teste seus poderes na ala de treinamento
+botao reiniciar
+botao sair do jogo
+
+
+Canva na area de treinamento 
+3 botoes para os poderes
+*/
