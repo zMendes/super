@@ -28,11 +28,14 @@ public class Laser : MonoBehaviour
     public int maxDistance = 10;
     Vector3 initialScale;
     Transform target;
+    CircleMotion motion;
     
     public Vector3 initTransform;
     public Vector3 initTransformObj;
 
     public int movieRatio;
+    
+    float currSpeed;
 
     public enum States {
         Space,
@@ -91,7 +94,6 @@ public class Laser : MonoBehaviour
     IEnumerator MoveFromTo(Transform objectToMove, Vector3 a, Vector3 b, float speed)
 
     {
-
         float step = (speed / (a - b).magnitude) * Time.fixedDeltaTime;
 
         float t = 0;
@@ -99,23 +101,26 @@ public class Laser : MonoBehaviour
         while (t <= 1.0f)
 
         {
-
             t += step;
 
             objectToMove.position = Vector3.Lerp(a, b, t);
 
             yield return new WaitForFixedUpdate();
-
         }
 
         objectToMove.position = b;
-
     }
 
     void scaleObj(Transform objectToScale){
         objectToScale.localScale = 2 * objectToScale.localScale;
-        Debug.Log(transform.position.x);
+        // Debug.Log(transform.position.x);
     }
+
+    void changeTimeObj(Transform objectToChange){
+        return ;
+
+    }
+
 
 
     void Update(){
@@ -131,7 +136,9 @@ public class Laser : MonoBehaviour
                 pressing = true;
                 initTransform = transform.position;
                 initTransformObj = hit.collider.gameObject.transform.position;
-                state = States.Move;
+                state = States.Time;
+                motion = hit.collider.gameObject.GetComponent<CircleMotion>();
+                currSpeed = motion.angularSpeed;
 
             }
 
@@ -146,28 +153,36 @@ public class Laser : MonoBehaviour
 
             move = (screenNow - screenInit);//.normalize;
             float movement = move.x;
-            Debug.Log("movement: " +movement);
-            Debug.Log("initialScale: " +initialScale);
-            Debug.Log("localScale: " + target.localScale);
+            // Debug.Log("movement: " +movement);
+            // Debug.Log("initialScale: " +initialScale);
+            // Debug.Log("localScale: " + target.localScale);
             float ratio = 1;
             if (movement > 0)
                 ratio = Mathf.Max(1,7 *movement);
             else if (movement < 0)
                 ratio = 1/Mathf.Max(1,7*(-movement));
             Debug.Log("Ratio: " + ratio);
-            Debug.Log(state);
+            Debug.Log("InitialSpeed" + currSpeed);
+            Debug.Log("CurrAngleSpeed" + motion.angularSpeed);
             if (ratio > 5)
                 ratio = 5;
             if (ratio < 0.1)
                 ratio = 0.1f;
             if (state == States.Space)
                 target.localScale = ratio * initialScale;
-            if (state == States.Time)
-                ratio = 2;
            if (state == States.Move){
             Vector3 delta = initTransform - transform.position;
             target.position = initTransformObj - (delta * movieRatio);
            }
+
+           if (state == States.Time){
+               motion.angularSpeed = ratio * currSpeed;
+           }
+
+
+        //    if (state == States.Time){
+
+        //    }
             
                 
 
