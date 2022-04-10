@@ -11,7 +11,11 @@ using Valve.VR.Extras;
 
 using Valve.VR;
 
-
+public enum States {
+        Space,
+        Time,
+        Move
+}
 public class Laser : MonoBehaviour
 
 {
@@ -28,7 +32,7 @@ public class Laser : MonoBehaviour
     public int maxDistance = 10;
     Vector3 initialScale;
     Transform target;
-    CircleMotion motion;
+    Motion motion;
     
     public Vector3 initTransform;
     public Vector3 initTransformObj;
@@ -36,12 +40,6 @@ public class Laser : MonoBehaviour
     public int movieRatio;
     
     float currSpeed;
-
-    public enum States {
-        Space,
-        Time,
-        Move
-    }
 
     public States state = States.Move;
      private void Start()
@@ -136,8 +134,8 @@ public class Laser : MonoBehaviour
                 pressing = true;
                 initTransform = transform.position;
                 initTransformObj = hit.collider.gameObject.transform.position;
-                state = States.Time;
-                motion = hit.collider.gameObject.GetComponent<CircleMotion>();
+                state = States.Time; 
+                motion = hit.collider.gameObject.GetComponent<Motion>();
                 currSpeed = motion.angularSpeed;
 
             }
