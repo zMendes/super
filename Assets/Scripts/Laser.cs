@@ -22,6 +22,11 @@ public class Laser : MonoBehaviour
 
     private SteamVR_LaserPointer steamVrLaserPointer;
     [SerializeField] private SteamVR_Action_Boolean botao = SteamVR_Input.GetAction<SteamVR_Action_Boolean>("InteractUI");
+
+    [SerializeField] private AudioSource time_sound;
+    [SerializeField] private AudioSource space_sound; 
+    [SerializeField] private AudioSource move_sound;
+
     SteamVR_Behaviour_Pose trackedObj;
 
     // private bool clicked = false;
@@ -61,22 +66,14 @@ public class Laser : MonoBehaviour
 
      }
 
- 
 
-     private void OnPointerClick(object sender, PointerEventArgs e)
+      private void OnPointerClick(object sender, PointerEventArgs e)
 
      {
-       // targetObject = e.target.transform;
         print("got it");
-         //scaleObj(e.target.transform);
-         //StartCoroutine(MoveFromTo(e.target.transform, e.target.transform.position, transform.position, 8.0f));
-        
-
-
 
      }
 
- 
 
      private void OnPointerOut(object sender, PointerEventArgs e){
 
@@ -165,8 +162,11 @@ public class Laser : MonoBehaviour
                 ratio = 5;
             if (ratio < 0.1)
                 ratio = 0.1f;
-            if (state == States.Space)
+
+            if (state == States.Space){
                 target.localScale = ratio * initialScale;
+                space_sound.Play();
+                }
            if (state == States.Move){
             Vector3 delta = initTransform - transform.position;
             target.position = initTransformObj - (delta * movieRatio);
@@ -174,10 +174,12 @@ public class Laser : MonoBehaviour
             if (motion.type == Type.Slide){
             motion.pointA.position = pointA - (delta * movieRatio);
             motion.pointB.position = pointB - (delta * movieRatio);}
+           move_sound.Play();
            }
 
            if (state == States.Time){
                motion.angularSpeed = ratio * currSpeed;
+               time_sound.Play();
            }
 
 
