@@ -37,6 +37,9 @@ public class Laser : MonoBehaviour
     public Vector3 initTransform;
     public Vector3 initTransformObj;
 
+    public Vector3 pointA;
+    public Vector3 pointB;
+
     public int movieRatio;
     
     float currSpeed;
@@ -127,17 +130,19 @@ public class Laser : MonoBehaviour
             
             RaycastHit hit;
             if (Physics.Raycast(transform.position, transform.forward, out hit, maxDistance)){
-                print("Found an object: " + hit.collider.name);
+                if (hit.collider.tag == "Object"){
                 posInit = transform.position;
                 target = hit.collider.gameObject.transform;
                 initialScale = target.localScale;
                 pressing = true;
                 initTransform = transform.position;
                 initTransformObj = hit.collider.gameObject.transform.position;
-                state = States.Time; 
                 motion = hit.collider.gameObject.GetComponent<Motion>();
+                if (motion.type == Type.Slide){
+                pointA = motion.pointA.position;
+                pointB = motion.pointB.position;}
                 currSpeed = motion.angularSpeed;
-
+                }
             }
 
         }
@@ -151,17 +156,11 @@ public class Laser : MonoBehaviour
 
             move = (screenNow - screenInit);//.normalize;
             float movement = move.x;
-            // Debug.Log("movement: " +movement);
-            // Debug.Log("initialScale: " +initialScale);
-            // Debug.Log("localScale: " + target.localScale);
             float ratio = 1;
             if (movement > 0)
                 ratio = Mathf.Max(1,7 *movement);
             else if (movement < 0)
                 ratio = 1/Mathf.Max(1,7*(-movement));
-            Debug.Log("Ratio: " + ratio);
-            Debug.Log("InitialSpeed" + currSpeed);
-            Debug.Log("CurrAngleSpeed" + motion.angularSpeed);
             if (ratio > 5)
                 ratio = 5;
             if (ratio < 0.1)
@@ -171,6 +170,10 @@ public class Laser : MonoBehaviour
            if (state == States.Move){
             Vector3 delta = initTransform - transform.position;
             target.position = initTransformObj - (delta * movieRatio);
+            motion.fixedPoint = target.position;
+            if (motion.type == Type.Slide){
+            motion.pointA.position = pointA - (delta * movieRatio);
+            motion.pointB.position = pointB - (delta * movieRatio);}
            }
 
            if (state == States.Time){

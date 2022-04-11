@@ -4,26 +4,28 @@ using System.Collections.Generic;
 using UnityEngine;
 public enum Type {
   Circle, 
-  Slide
+  Slide,
+  Exist
 }
 public class Motion : MonoBehaviour
 {
   public float angularSpeed = 1f;
   public float circleRad = 1f;
  
-  private Vector2 fixedPoint;
+  public Vector2 fixedPoint;
   private float currentAngle;
   [SerializeField]
-  Type type;
+  public Type type;
 
   [SerializeField]
   public Transform pointA;
   [SerializeField]
-  public Transform pointB;
+  public Transform pointB; 
  
 void Start ()
 {
   fixedPoint = transform.position;
+
 }
  
 void Update ()

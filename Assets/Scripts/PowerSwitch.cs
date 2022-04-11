@@ -14,13 +14,16 @@ public class PowerSwitch : MonoBehaviour
     }
 
     public void SizeClick(){
+        Debug.Log("Size");
         power.state = States.Space;
 
     }
     public void TimeClick(){
+        Debug.Log("Time");
         power.state = States.Time;
     }
     public void MoveClick(){
+        Debug.Log("Move");
         power.state = States.Move;
 
     }
